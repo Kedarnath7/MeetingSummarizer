@@ -38,10 +38,10 @@ def init_database():
     
     conn.commit()
     conn.close()
-    print("✅ Database initialized successfully with enhanced tracking")
+    print("Database initialized successfully")
 
 def save_meeting_summary(filename: str, transcript: str, summary: dict) -> int:
-    """Save meeting summary to database with enhanced tracking"""
+    """Save meeting summary to database"""
     conn = get_db_connection()
     cursor = conn.cursor()
     
@@ -58,7 +58,7 @@ def save_meeting_summary(filename: str, transcript: str, summary: dict) -> int:
     conn.close()
     
     status = "fallback" if is_fallback else "real"
-    print(f"✅ Meeting summary saved with ID: {meeting_id} ({status} transcription)")
+    print(f"Meeting summary saved with ID: {meeting_id} ({status} transcription)")
     return meeting_id
 
 def get_meeting_summary(meeting_id: int):
@@ -77,38 +77,38 @@ def get_meeting_summary(meeting_id: int):
         return dict(result)
     return None
 
-def get_all_meetings(limit: int = 10):
-    """Get all meeting summaries with service status"""
-    conn = get_db_connection()
-    cursor = conn.cursor()
+# def get_all_meetings(limit: int = 10):
+#     """Get all meeting summaries with service status"""
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
     
-    cursor.execute('''
-        SELECT id, filename, created_at, asr_service, llm_service, transcript_length, is_fallback
-        FROM meeting_summaries 
-        ORDER BY created_at DESC 
-        LIMIT ?
-    ''', (limit,))
+#     cursor.execute('''
+#         SELECT id, filename, created_at, asr_service, llm_service, transcript_length, is_fallback
+#         FROM meeting_summaries 
+#         ORDER BY created_at DESC 
+#         LIMIT ?
+#     ''', (limit,))
     
-    results = cursor.fetchall()
-    conn.close()
+#     results = cursor.fetchall()
+#     conn.close()
     
-    return [dict(result) for result in results]
+#     return [dict(result) for result in results]
 
-def get_service_stats():
-    """Get statistics about ASR service usage"""
-    conn = get_db_connection()
-    cursor = conn.cursor()
+# def get_service_stats():
+#     """Get statistics about ASR service usage"""
+#     conn = get_db_connection()
+#     cursor = conn.cursor()
     
-    cursor.execute('''
-        SELECT 
-            COUNT(*) as total_meetings,
-            SUM(CASE WHEN is_fallback = 1 THEN 1 ELSE 0 END) as fallback_count,
-            SUM(CASE WHEN is_fallback = 0 THEN 1 ELSE 0 END) as real_transcription_count,
-            AVG(transcript_length) as avg_transcript_length
-        FROM meeting_summaries
-    ''')
+#     cursor.execute('''
+#         SELECT 
+#             COUNT(*) as total_meetings,
+#             SUM(CASE WHEN is_fallback = 1 THEN 1 ELSE 0 END) as fallback_count,
+#             SUM(CASE WHEN is_fallback = 0 THEN 1 ELSE 0 END) as real_transcription_count,
+#             AVG(transcript_length) as avg_transcript_length
+#         FROM meeting_summaries
+#     ''')
     
-    result = cursor.fetchone()
-    conn.close()
+#     result = cursor.fetchone()
+#     conn.close()
     
-    return dict(result) if result else None
+#     return dict(result) if result else None

@@ -19,3 +19,14 @@ class MeetingResponse(BaseModel):
     summary: Dict[str, Any]
     transcript_preview: str
     created_at: str
+
+class MeetingListResponse(BaseModel):
+    meetings: List[Dict[str, Any]]
+    total: int
+
+class HealthResponse(BaseModel):
+    status: str
+    service: str
+    asr_provider: str
+    llm_provider: str
+    timestamp: str

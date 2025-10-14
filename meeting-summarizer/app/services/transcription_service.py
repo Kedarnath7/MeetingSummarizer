@@ -6,9 +6,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def transcribe_audio(audio_file_path: str) -> str:
-    """
-    Real ASR using AssemblyAI for production
-    """
+
     print(f"Starting AssemblyAI transcription for: {audio_file_path}")
     
     if not os.path.exists(audio_file_path):
